@@ -43,12 +43,14 @@ function AddJournal() {
             setSuccess(true);
             setTimeout(() => {
               setSuccess(false);
+              setImage(false)
             }, 3000);
           }) .catch((err) => {
             setLoading(false);
             setUploadError(err.response.data);
             setTimeout(() => {
               setUploadError(false);
+              setImage(false)
             }, 3000);
           });
       });
@@ -73,6 +75,15 @@ function AddJournal() {
         </Alert>
       ) : (
         ""
+      )}
+
+
+{image ? (
+        ''
+      ) : (
+        <Alert key={"warning"} variant={"warning"}>
+       select image
+      </Alert>
       )}
 
       {success ? (
@@ -106,6 +117,7 @@ function AddJournal() {
           } else {
             settypeerror(true);
             console.log("ERROr");
+            setImage(false)
           }
         }}
         type="file"
@@ -115,7 +127,7 @@ function AddJournal() {
       {loading ? (
         <h2>Loading...</h2>
       ) : (
-        <button onClick={() => upload()}>UPLOAD</button>
+       image?<button  onClick={() => upload()}>UPLOAD</button>:<button disabled>UPLOAD</button>
       )}
     </div>
   );

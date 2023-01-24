@@ -7,7 +7,7 @@ import TopBar from "../TopBar/TopBar";
 
 function AddBook() {
   const navigate = useNavigate()
-  const [image, setImage] = useState();
+  const [image, setImage] = useState(false);
   const [fileName, setFileName] = useState();
   const [typeerror, settypeerror] = useState(false);
   const [size, setSize] = useState();
@@ -16,7 +16,8 @@ function AddBook() {
   const [success, setSuccess] = useState(false);
   const [uploadError, setUploadError] = useState(false);
   const upload = () => {
-    setLoading(true);
+    if(image){
+      setLoading(true);
     console.log("HI");
     const data = new FormData();
     data.append("file", image);
@@ -44,6 +45,7 @@ function AddBook() {
             setSuccess(true);
             setTimeout(() => {
               setSuccess(false);
+              setImage(false)
             }, 3000);
           })
           .catch((err) => {
@@ -51,9 +53,11 @@ function AddBook() {
             setUploadError(err.response.data);
             setTimeout(() => {
               setUploadError(false);
+              setImage(false)
             }, 3000);
           });
       });
+    }
   };
   return (
     <div className="">
@@ -73,6 +77,18 @@ function AddBook() {
       ) : (
         ""
       )}
+
+
+
+{image ? (
+        ''
+      ) : (
+        <Alert key={"warning"} variant={"warning"}>
+       select image
+      </Alert>
+      )}
+
+      
 
       {success ? (
         <Alert key={"success"} variant={"success"}>
@@ -104,6 +120,7 @@ function AddBook() {
             settypeerror(false);
           } else {
             settypeerror(true);
+            setImage(false)
             console.log("ERROr");
           }
         }}
@@ -114,7 +131,7 @@ function AddBook() {
       {loading ? (
         <h2>Loading...</h2>
       ) : (
-        <button onClick={() => upload()}>UPLOAD</button>
+       image?<button  onClick={() => upload()}>UPLOAD</button>:<button disabled>UPLOAD</button>
       )}
     </div>
   );
